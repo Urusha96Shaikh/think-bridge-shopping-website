@@ -1,0 +1,107 @@
+﻿@model IEnumerable<think_bridge_shopping_website.Models.ProductViewModel>
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content success-page-cont">
+    <div class="container-fluid">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+
+                <!-- Success Card -->
+                <div class="card success-card">
+                    <div class="card-body">
+                        <div class="success-cont">
+                            @using (Html.BeginForm("Index", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="content container-fluid">
+                                    <!-- Page Header -->
+                                    <div class="page-header">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-auto">
+                                                <h3 class="page-title"><strong>Product</strong></h3>
+                                                <div class="col-sm-offset-10 col">
+                                                    @Html.ActionLink("Add Product", "Create", new { controller = "Product" },
+                                                      new { @class = "btn btn-primary text-white float-right mt-2", @style = "margin-bottom:10px;" })
+                                                </div>
+                                                <ul class="breadcrumb">
+                                                    <li class="breadcrumb-item"><a href="~/Dashboard/Index">Dashboard</a></li>
+                                                    <li class="breadcrumb-item active">Products</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Page Header -->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @if (ViewBag.Message != null)
+                                                    {
+                                                        @ViewBag.Message;
+                                                    }
+                                                    <div class="table-responsive">
+                                                        <table class="datatable table table-hover table-center mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>@Html.DisplayNameFor(model => model.product_name)</th>
+                                                                    <th>@Html.DisplayNameFor(model => model.product_rate)</th>
+                                                                    <th>@Html.DisplayNameFor(model => model.product_img_file_path)</th>
+                                                                    <th>@Html.DisplayNameFor(model => model.product_added_on_text)</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item in Model)
+                                                                {
+                                                                    <tr>
+                                                                        <td> @Html.DisplayFor(modelItem => item.product_name)</td>
+                                                                        <td> @Html.DisplayFor(modelItem => item.product_rate)</td>
+                                                                        <td>
+                                                                            <img src="@Url.Content(@item.product_img_file_path)" style="max-width:100px; max-height:100px;" alt="Img" />
+                                                                        </td>
+                                                                        <td> @Html.DisplayFor(modelItem => item.product_added_on_text)</td>
+                                                                        <td>
+                                                                            @Html.ActionLink("Edit", "Edit", "Product", new { @id = item.Id }, new { @class = "btn btn-warning fa fa-edit" })
+                                                                            @Html.ActionLink("View", "Details", "Product", new { @id = item.Id }, new { @class = "btn btn-info fa fa-eye" })
+                                                                            @Html.ActionLink("Delete", "Delete", "Product", new { @id = item.Id }, new { @class = "btn btn-danger fa fa-trash" })
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <!-- /Success Card -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            window.applicationBaseUrl = @Html.Raw(HttpUtility.JavaScriptStringEncode(
+                        new Uri(
+                                    new Uri(this.Context.Request.Url.GetLeftPart(UriPartial.Authority)),
+                                    Url.Content("~/")
+                                ).ToString(), true));
+            $('.datatable').DataTable();
+
+        });
+        //$(function () {
+        //});
+    </script>
+}
